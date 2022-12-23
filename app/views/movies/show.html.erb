@@ -1,0 +1,12 @@
+<h1 class="display-2 text-center"><%= @movie.title %></h1>
+<div class="text-center">
+		<%= image_tag url_for(@movie.image), :class => 'img-thumbnail', :style => 'margin-top:10px; margin-bottom:10px;' %>
+	</div>
+	<div class="container">
+		<p class="lead"> &emsp; <%= @movie.body %></p>
+		<div class="row fs-3">
+			<div class="col">Category: <%= @movie.category.capitalize %></div>
+			<div class="col">Rating: <%= @movie.default_rating %></div>
+		</div>
+	</div>
+</div>
