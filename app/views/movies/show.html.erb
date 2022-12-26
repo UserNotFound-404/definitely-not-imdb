@@ -6,7 +6,7 @@
 		<p class="lead"> &emsp; <%= @movie.body %></p>
 		<div class="row fs-3">
 			<div class="col">Category: <%= @movie.category.capitalize %></div>
-			<div class="col">Rating: <%= @movie.default_rating %></div>
+			<div class="col">Rating: <%= @movie.get_average_rating %></div>
 		</div>
 	</div>
 </div>

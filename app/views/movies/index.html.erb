@@ -4,36 +4,50 @@
 </div>
 
 
-<%= form_with url: movies_path, method: :get do |f| %>
-<%= f.select(:category, @categories) %>
-<%= f.submit "Sort" %>
+<%= form_with url: movies_path, method: :get, class: "pricing-header p-3 pb-md-4 mx-auto text-center" do |f| %>
+<label>You can sort films by categories</label>
+<%= f.select(:category, @categories, {prompt: "Select category", required: true}, {class: "btn btn-outline-secondary dropdown-toggle"}) %>
+<%= f.submit "Sort", class:" btn btn-outline-dark me-2" %>
 <% end %>
 
 <div class="album py-2 bg-light justify-content-center">
   <div class="container">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    <% @movies.each do |movie| %>
+      <% if @movies.empty? %>
+        <% refresh %>
+      <% end %>
+    <% @movies.each_with_index do |movie, index| %>
     <div class="card mb-3" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4">
-          <%= image_tag url_for(movie.image), :class => 'img-fluid rounded-start', :style => 'margin-top:10px; margin-bottom:10px; height:auto;' %>
+        <%= image_tag url_for(movie.image), :class => 'img-fluid rounded', :style => 'margin-top:10px; margin-bottom:10px;' %>
         </div>
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">
-              <%= link_to movie.title, movie_url(movie.id), class: 'nav-link' %> 
+              <%= link_to movie.title, movie_url(movie.id), class: 'nav-link nav-count-' + index.to_s %>
             </h5>
             <% if movie.body.length < 128 %>
             <p class="card-text"><%= movie.body %></p>
             <% else %>
             <p class="card-text"><%= movie.body[0..128] %><a href="/movies/<%= movie.id %>" style="text-decoration: none; color:black;">...</a></p>
             <% end %>
-            <p class="card-text">Rating: <%= movie.get_rating %>
-            </p>
-            <div class="stars-container"></div>
-            <div>Current rating: <span id="rating">0</span></div>
           </div>
         </div>
+      </div>
+      <div class="row" style="height:100%; display:flex; align-items:flex-end; justify-content: flex-end;">
+<p class="card-text">Average rating: <%= movie.get_average_rating %>
+            </p>
+            <% if user_signed_in? %>
+              <div class="counter-<%= index %> text-center">
+                <div class="stars-container"></div>
+                <% if Rating.exists?(movie_id: movie.id, user_id: current_user.id) %>
+                <div style="margin:10px;">Your rating: <span id="rating"><%= Rating.find_by(movie_id: movie.id, user_id: current_user.id).ratings.to_i %></span>/10</div>
+                <% else %>
+                <div style="margin:10px;">You haven`t rated this film yet <br/><span id="rating">0</span>/10</div>
+                <% end %>
+                </div>
+            <% end %>
       </div>
     </div>
     <% end %>
@@ -43,15 +57,4 @@
                    pagination_class: "pagination-sm flex-wrap justify-content-center" %>
 
 </div>
-    <div class="fs-5 lead">You can filter films by category:&emsp;
-
-      <form action="/filter" method="post">
-        <select class="btn btn-outline-secondary dropdown-toggle">
-          <option selected>Choose category</option>
-          <% @categories.each do |category| %>
-          <option value="<%= category %>"><%= category.capitalize %></option>
-          <% end %>
-        </select>
-        <input type="button" name="submit" value="Filter">
-      </form>
-    </div>
+</div>

@@ -5,7 +5,7 @@ ActiveAdmin.register Movie do
     f.inputs do
       f.input :title, required: true
       f.input :body
-      f.input :ratings
+      f.input :default_rating
       f.input :category, required: true
       f.input :image, as: :file, required: true
     end

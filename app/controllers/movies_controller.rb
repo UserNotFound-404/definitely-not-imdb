@@ -8,18 +8,30 @@ class MoviesController < ApplicationController
 
 	def show; end
 
-	def get_rating
-		"2"
+	def refresh
+		redirect_to :action => "index"
 	end
+	helper_method :refresh
 
-	private 
+	def user_rate
+		if Rating.exists?(movie: params[:movie].to_i, user_id: current_user.id)
+    	@rate = Rating.where(movie: params[:movie].to_i, user_id: current_user.id).update_all(ratings: params[:ratings].to_f)
+			puts "ALREADY EXIST, BUT UPDATED"
+		else
+    	@rate = Rating.create(rate_params)
+  	end
+  end
+
+	private
+  def rate_params
+    {movie_id: params[:movie].to_i, user_id: current_user.id,ratings: params[:ratings].to_f}
+  end
 
 	def select_movie
 		@movie = Movie.find(params[:id])
 	end
 
 	def select_movies
-		#binding.pry
 		if params[:category]
 			@movies = Movie.where(category: params[:category]).page params[:page]
 		else

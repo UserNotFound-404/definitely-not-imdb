@@ -7,7 +7,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "movies#index"
   resources :movies
-  #get "/movies/:title", to: "movies#index"
-  #get "/movies/:id", to: "movies#show"
-
+  post 'user_rate' => 'movies#user_rate'
 end
