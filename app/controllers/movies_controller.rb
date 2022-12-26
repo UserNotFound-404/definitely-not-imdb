@@ -8,10 +8,6 @@ class MoviesController < ApplicationController
 
 	def show; end
 
-	def refresh
-		redirect_to :action => "index"
-	end
-	helper_method :refresh
 
 	def user_rate
 		if Rating.exists?(movie: params[:movie].to_i, user_id: current_user.id)
@@ -32,7 +28,7 @@ class MoviesController < ApplicationController
 	end
 
 	def select_movies
-		if params[:category]
+		if params[:category].presence
 			@movies = Movie.where(category: params[:category]).page params[:page]
 		else
 			@movies = Movie.all.page params[:page]

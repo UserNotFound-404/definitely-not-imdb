@@ -1,5 +1,5 @@
 ActiveAdmin.register Movie do
-	permit_params :title, :body, :ratings, :category, :image
+	permit_params :title, :body, :default_rating, :category, :image
 
 	form do |f|
     f.inputs do
