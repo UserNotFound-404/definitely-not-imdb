@@ -20,7 +20,7 @@
         <% if File.exist?(ActiveStorage::Blob.service.path_for(movie.image.key)) %>
         <%= image_tag url_for(movie.image), :class => 'img-fluid rounded', :style => 'margin-top:10px; margin-bottom:10px;' %>
         <% else %>
-          <%= image_tag('No_Image_Available.jpg'), :class => 'img-fluid rounded', :style => 'margin-top:10px; margin-bottom:10px;' %>
+          <%= image_tag('No_Image_Available.jpg', :class => 'img-fluid rounded', :style => 'margin-top:10px; margin-bottom:10px;') %>
         <% end %>
         </div>
         <div class="col-md-8">
